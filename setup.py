@@ -1,11 +1,17 @@
 from setuptools import setup, find_packages
 
-setup(name='talktracker',
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setup(
+      name='talktracker',
       version='0.1',
-      description='Records information about the performance of participants in a group discussion',
-      url='https://github.com/mohammadbashiri/talktracker',
       author='Mohammad Bashiri',
       author_email='mohammadbashiri93@gmail.com',
+      description='Records information about the performance of participants in a group discussion',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
+      url='https://github.com/mohammadbashiri/talktracker',
       license='MIT',
       packages=find_packages(),
       
