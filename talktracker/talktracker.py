@@ -5,6 +5,7 @@ from warnings import warn
 
 class Member(object):
     def __init__(self, country=None, age=None, batch=None, name=None):
+    #TODO: get the input as kwargs so the user can have control over args
     """Create a Memebr
 
     Args:
