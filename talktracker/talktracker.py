@@ -7,18 +7,18 @@ from talktracker.talkanalysis import time_diff, time_add, dissect_time, to_secon
 
 class Member(object):
     def __init__(self, country=None, age=None, batch=None, name=None):
-    #TODO: get the input as kwargs so the user can have control over args
-    """Create a Memebr
+        #TODO: get the input as kwargs so the user can have control over args
+        """Create a Memebr
 
-    Args:
-        country (string):
-        age (int):
-        batch (string):
-        name (string):
+        Args:
+            country (string):
+            age (int):
+            batch (string):
+            name (string):
 
-    Returns:
-        a Member object
-    """
+        Returns:
+            a Member object
+        """
         self.name = name
         self.country = country
         self.age = age
@@ -67,16 +67,16 @@ class Member(object):
 
 class Team(object):
     def __init__(self, members, name):
-    """Create a Team object
+        """Create a Team object
 
-    Args:
-        members: list of member names
-        name: name of the team
+        Args:
+            members: list of member names
+            name: name of the team
 
-    Returns:
-        a Team object
-    """
-    #TODO: user should be able to also create a Team with a list of existing member objects
+        Returns:
+            a Team object
+        """
+        #TODO: user should be able to also create a Team with a list of existing member objects
         if all(isinstance(member, str) for member in members):
             self._members = {member: Member(name=member) for member in members}
         else:
@@ -124,17 +124,17 @@ class Team(object):
                 for n in name:
                     self._members[n] = Member(name=n)
         else:
-            raise TypeError("Input must be a string, or a list of string)
+            raise TypeError("Input must be a string, or a list of string")
 
 
 class Session(object):
     def __init__(self, teams, name=None):
-    """Creates a session object
+        """Creates a session object
 
-    Args:
-        teams ():
-        name ():
-    """
+        Args:
+            teams ():
+            name ():
+        """
         self.name = name
         self._teams = {team.name: team for team in teams}
         self.date = None
@@ -156,7 +156,7 @@ class Session(object):
         return list(self._teams.keys())
 
     def set_date(self, force_it=False):
-    """Set a date for the session"""
+        """Set a date for the session"""
         yy = time.ctime().split(' ')[-1]
         ddmm = ' '.join(time.ctime().split(' ')[1:3])
         if (not self.date) or force_it:
@@ -165,12 +165,15 @@ class Session(object):
             warn("You are trying to set the date again. \nIf you are aware of that, set force_it to True")
 
     def start(self):
+        """Sets the start time of the whole session"""
         now = datetime.now()
         self.start_time = (now.hour, now.minute, now.second)
 
     def end(self):
+        """Sets the end time of the whole session"""
         now = datetime.now()
         self.end_time = (now.hour, now.minute, now.second)
 
     def save(self):
+        """Save the session data in a CSV file"""
         raise NotImplementedError
