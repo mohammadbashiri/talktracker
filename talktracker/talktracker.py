@@ -6,23 +6,20 @@ from talktracker.talkanalysis import time_diff, time_add, dissect_time, to_secon
 
 
 class Member(object):
-    def __init__(self, country=None, age=None, batch=None, name=None):
-        #TODO: get the input as kwargs so the user can have control over args
+    def __init__(self, name, **kwargs):
         """Create a Memebr
 
         Args:
+            name (string):
             country (string):
             age (int):
             batch (string):
-            name (string):
 
         Returns:
             a Member object
         """
         self.name = name
-        self.country = country
-        self.age = age
-        self.batch = batch
+        [setattr(self, key, value) for key, value in kwargs.items()];
         self._start_times = []
         self._end_times = []
         self._intervals = []
@@ -70,33 +67,23 @@ class Team(object):
         """Create a Team object
 
         Args:
-            members: list of member names
+            members: list of member names or a list of member object
             name: name of the team
 
         Returns:
             a Team object
         """
-        #TODO: user should be able to also create a Team with a list of existing member objects
-        if all(isinstance(member, str) for member in members):
-            self._members = {member: Member(name=member) for member in members}
-        else:
-            raise TypeError("Please provide a list of member names.")
-
+        self._members = []
+        [self.add_member(member) for member in members];
         self.name = name
         self._total_time = (0, 0, 0)
 
     def __getitem__(self, item):
-        return self._members[item]
-
-    def __getattribute__(self, item):
-        try:
-            return super().__getattribute__(item)
-        except AttributeError:
-            return self._members[item]
+        return getattr(self, item)
 
     @property
     def members(self):
-        return list(self._members.keys())
+        return self._members
 
     @property
     def member_counts(self):
@@ -106,25 +93,25 @@ class Team(object):
     def total_time(self):
         """Returns the total time of the whole group speaking"""
         self._total_time = (0, 0, 0)
-        for member in self._members.keys():
-            self._total_time = time_add(self._total_time, self[member].total_time)
+        for member in self._members:
+            self._total_time = time_add(self._total_time, getattr(self, member).total_time)
 
         return self._total_time
 
-    def add_member(self, name):
+    def add_member(self, member):
         """Adds a user to the group
 
         Args:
-            name (string or list of strings)
+            member (str ot list): the name of the new member or the new Member object
         """
-        if isinstance(name, str):
-            self._members[name] = Member(name=name)
-        elif isinstance(name, list):
-            if all(isinstance(n, str) for n in name):
-                for n in name:
-                    self._members[n] = Member(name=n)
+        if isinstance(member, str):
+            setattr(self, member, Member(name=member))
+            self._members.append(member)
+        elif isinstance(member, Member):
+            setattr(self, member.name, member)
+            self._members.append(member.name)
         else:
-            raise TypeError("Input must be a string, or a list of string")
+            raise TypeError("Please provide a list of member names or member objects.")
 
 
 class Session(object):
