@@ -1,4 +1,3 @@
-import time
 from datetime import datetime
 from warnings import warn
 
@@ -10,10 +9,7 @@ class Member(object):
         """Create a Memebr
 
         Args:
-            name (string):
-            country (string):
-            age (int):
-            batch (string):
+            name (str): name of the memebr
 
         Returns:
             a Member object
