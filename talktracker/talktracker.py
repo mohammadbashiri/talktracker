@@ -154,12 +154,11 @@ class Session(object):
 
     def set_date(self, force_it=False):
         """Set a date for the session"""
-        yy = time.ctime().split(' ')[-1]
-        ddmm = ' '.join(time.ctime().split(' ')[1:3])
         if (not self.date) or force_it:
-            self.date = ' '.join([ddmm, yy])
+            self.date = datetime.now().strftime('%d/%m/%Y')
         else:
             warn("You are trying to set the date again. \nIf you are aware of that, set force_it to True")
+
 
     def start(self):
         """Sets the start time of the whole session"""
