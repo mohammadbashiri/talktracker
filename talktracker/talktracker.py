@@ -63,7 +63,7 @@ class Member(object):
 
 
 class Team(object):
-    def __init__(self, members, name):
+    def __init__(self, name, members=[]):
         """Create a Team object
 
         Args:
@@ -105,7 +105,7 @@ class Team(object):
             member (str ot list): the name of the new member or the new Member object
         """
         if isinstance(member, str):
-            setattr(self, member, Member(name=member))
+            setattr(self, member, Member(member))
             self._members.append(member)
         elif isinstance(member, Member):
             setattr(self, member.name, member)
@@ -115,32 +115,42 @@ class Team(object):
 
 
 class Session(object):
-    def __init__(self, teams, name=None):
+    def __init__(self, name, teams=[]):
         """Creates a session object
 
         Args:
-            teams ():
-            name ():
+            teams (list): list of team names or a list of team object
+            name (str): name of the session
         """
-        self.name = name
-        self._teams = {team.name: team for team in teams}
+        self.name = name if name else "Untitled"
+        self._teams = []
+        [self.add_team(team) for team in teams];
         self.date = None
         self.start_time = (0, 0, 0)
         self.end_time = (0, 0, 0)
         self.set_date()
 
     def __getitem__(self, item):
-        return self._teams[item]
-
-    def __getattribute__(self, item):
-        try:
-            return super().__getattribute__(item)
-        except AttributeError:
-            return self._teams[item]
+        return getattr(self, item)
 
     @property
     def teams(self):
-        return list(self._teams.keys())
+        return self._teams
+
+    def add_team(self, team):
+        """Adds a new team to the session
+
+        Args:
+            team (str or Team): Either a string or a Team object to be added to the session
+        """
+        if isinstance(team, str):
+            setattr(self, team, Team(team))
+            self._teams.append(team)
+        elif isinstance(team, Team):
+            setattr(self, team.name, team)
+            self._teams.append(team.name)
+        else:
+            raise TypeError("Please provide a list of member names or member objects.")
 
     def set_date(self, force_it=False):
         """Set a date for the session"""
