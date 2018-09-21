@@ -1,4 +1,6 @@
 from datetime import timedelta
+from random import sample, randint
+import talktracker as tt
 
 
 def time_diff(time1, time2):
@@ -40,3 +42,65 @@ def to_seconds(*args):
         return args[0][0] * 60 * 60 + args[0][1] * 60 + args[0][2]
     else:
         raise ValueError("Input must be either three integers, or a tuple of three integers")
+
+def gen_fake_data(teams_n=0, members_n=[], duration=(2, 30, 0)):
+
+    """ Sudo code
+    
+    1. create teams_n teams with randomly generated names
+    2. for each team create corresponding number of members with randomly generated attributes.
+       attributes might include:
+        - age (int)
+        - country (str, category)
+        - batch (int)
+
+    3. create a session and add the teams to the session
+    4. randomly pick a team
+    5. randomly pick a member and assign a time to him/her
+    6. do 4 and 5 again and again until the total time of the session (total time of the total times of the teams) becomes greater than the given duration
+
+    """
+
+    team_names = team_name_list.copy()
+    member_names = member_name_list.copy()
+
+    teams = []
+    for ind in range(teams_n):
+        members = []
+        for _ in range(members_n[ind]):
+            name = sample(member_names, 1)[0]
+            member_names.remove(name) # remove this name from the list (without replacement)
+            age = randint(1, 40)
+            batch = randint(1, 3)
+            country = 'Germany'
+            members.append(tt.Member(name, age=age, batch=batch, country=country))
+
+        name = sample(team_names, 1)[0]
+        team_names.remove(name)
+        teams.append(tt.Team(name, members=members))
+
+
+    session = tt.Session('Untitled', teams=teams)
+
+    return session
+    """ Generates data for a fake session
+
+    Args:
+        teams_n (int): number of teams
+        members_n (int or a list): a single number or a list of numbers. of a single number os passed all the team will have similar number of members.
+
+    Returns:
+        a session object with fake data
+    
+    """
+
+
+team_name_list = ["RockStars", "ShadowWalkers", "MiddleEasterns", "Newrons", "Persians", 
+                  "Baghalies", "Golabies", "Loosers"]
+
+member_name_list = ["Mohammad", "Annika", "Amir", "Yasaman", "Arman", "Nick", "Nicholas" , 
+                    "Michael", "Aleksndra", "Fati", "Rasoul", "Janne", "Yagmur", "Raja", 
+                    "Abdallah", "Viktorja", "Alex", "James", "Marie", "Auguste", "Nora", 
+                    "Mathew", "Stefan", "Steffen", "Darya", "Tamara", "Ali", "Niloufar", 
+                    "Christoph", "Werner", "Florian", "Bernhard", "Samuel", "Karan", "Elisa",
+                    "Atena", "Milad", "Nazanin", "Rahaa", "Amin", "Ehsan", "Shahab", "Sepideh"]
