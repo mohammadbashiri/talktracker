@@ -12,3 +12,4 @@ docs_guide.txt
 .cache
 *.egg-info
 .eggs
+*.ipynb_checkpoints
