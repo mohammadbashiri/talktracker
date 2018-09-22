@@ -1,7 +1,7 @@
 from datetime import datetime
 from warnings import warn
 
-from talktracker.talkanalysis import time_diff, time_add, dissect_time, to_seconds
+from talktracker.analysis import time_diff, time_add, dissect_time, to_seconds
 
 
 class Member(object):
