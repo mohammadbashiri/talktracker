@@ -111,7 +111,7 @@ class Team(object):
 
 
 class Session(object):
-    def __init__(self, name, teams=[]):
+    def __init__(self, name, teams=[], members=[]):
         """Creates a session object
 
         Args:
@@ -119,6 +119,8 @@ class Session(object):
             name (str): name of the session
         """
         self.name = name if name else "Untitled"
+        self._members = []
+        [self.add_member(member) for member in members];
         self._teams = []
         [self.add_team(team) for team in teams];
         self.date = None
@@ -130,8 +132,27 @@ class Session(object):
         return getattr(self, item)
 
     @property
+    def members(self):
+        return self._members
+    
+    @property
     def teams(self):
         return self._teams
+
+    def add_member(self, member):
+        """Adds a new member to the session
+
+        Args:
+            member(str or Member): Either a string or a Memebr object to be added to the session
+        """
+        if isinstance(member, str):
+            setattr(self, member, Member(member))
+            self._members.append(member)
+        elif isinstance(member, Member):
+            setattr(self, member.name, member)
+            self._members.append(member.name)
+        else:
+            raise TypeError("Please provide a member name or a member object.")
 
     def add_team(self, team):
         """Adds a new team to the session
@@ -146,7 +167,7 @@ class Session(object):
             setattr(self, team.name, team)
             self._teams.append(team.name)
         else:
-            raise TypeError("Please provide a list of member names or member objects.")
+            raise TypeError("Please provide a team name or a team object.")
 
     def set_date(self, force_it=False):
         """Set a date for the session"""
