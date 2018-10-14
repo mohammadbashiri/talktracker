@@ -14,7 +14,8 @@ setup(
       url='https://github.com/mohammadbashiri/talktracker',
       license='MIT',
       packages=find_packages(),
-      
+
       # required packages
       install_requires=['numpy', 'matplotlib', 'click'],
+      tests_require = ['pytest'],
       )
