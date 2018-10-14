@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
       name='talktracker',
-      version='0.1',
+      version='0.12',
       author='Mohammad Bashiri',
       author_email='mohammadbashiri93@gmail.com',
       description='Records information about the performance of participants in a group discussion',
